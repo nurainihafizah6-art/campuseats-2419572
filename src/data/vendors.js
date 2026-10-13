@@ -13,6 +13,7 @@ const vendors = [
         price: 9.5,
         category: "Burgers",
         available: true,
+        popularity: 95,
       },
       {
         id: "crave-2",
@@ -21,6 +22,7 @@ const vendors = [
         price: 8,
         category: "Burgers",
         available: true,
+        popularity: 85,
       },
       {
         id: "crave-3",
@@ -29,6 +31,7 @@ const vendors = [
         price: 13,
         category: "Burgers",
         available: true,
+        popularity: 80,
       },
       {
         id: "crave-4",
@@ -37,6 +40,7 @@ const vendors = [
         price: 7,
         category: "Snacks",
         available: true,
+        popularity: 90,
       },
       {
         id: "crave-5",
@@ -45,6 +49,7 @@ const vendors = [
         price: 6.5,
         category: "Snacks",
         available: true,
+        popularity: 75,
       },
       {
         id: "crave-6",
@@ -53,6 +58,7 @@ const vendors = [
         price: 8.5,
         category: "Snacks",
         available: true,
+        popularity: 70,
       },
       {
         id: "crave-7",
@@ -61,6 +67,7 @@ const vendors = [
         price: 7,
         category: "Drinks",
         available: true,
+        popularity: 88,
       },
       {
         id: "crave-8",
@@ -69,6 +76,7 @@ const vendors = [
         price: 4.5,
         category: "Drinks",
         available: false,
+        popularity: 65,
       },
     ],
   },
@@ -86,6 +94,7 @@ const vendors = [
         price: 7.5,
         category: "Rice",
         available: true,
+        popularity: 92,
       },
       {
         id: "hafsa-2",
@@ -94,6 +103,7 @@ const vendors = [
         price: 7,
         category: "Rice",
         available: true,
+        popularity: 85,
       },
       {
         id: "hafsa-3",
@@ -102,6 +112,7 @@ const vendors = [
         price: 6,
         category: "Noodles",
         available: true,
+        popularity: 78,
       },
       {
         id: "hafsa-4",
@@ -110,6 +121,7 @@ const vendors = [
         price: 2.5,
         category: "Drinks",
         available: true,
+        popularity: 90,
       },
     ],
   },
@@ -127,6 +139,7 @@ const vendors = [
         price: 9,
         category: "Rice",
         available: true,
+        popularity: 95,
       },
       {
         id: "aminah-2",
@@ -135,6 +148,7 @@ const vendors = [
         price: 3,
         category: "Drinks",
         available: true,
+        popularity: 80,
       },
       {
         id: "aminah-3",
@@ -143,6 +157,7 @@ const vendors = [
         price: 7,
         category: "Noodles",
         available: true,
+        popularity: 82,
       },
     ],
   },

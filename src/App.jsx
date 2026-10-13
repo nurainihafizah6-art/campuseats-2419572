@@ -38,6 +38,17 @@ function App() {
         <section>
           <h2 className="section-title">Menu: {selectedVendor.name}</h2>
 
+          <div style={{ marginBottom: "20px" }}>
+            <label htmlFor="sort-menu">Sort menu by: </label>
+
+            <select id="sort-menu" defaultValue="default">
+              <option value="default">Default</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="popular">Most Popular</option>
+            </select>
+          </div>
+
           <MenuList items={selectedVendor.menu} onAdd={handleAddToCart} />
         </section>
       </main>
