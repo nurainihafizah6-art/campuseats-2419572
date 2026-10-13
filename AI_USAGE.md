@@ -12,7 +12,7 @@ Add a new section every week, before you tag. Did not use AI? Write "None" under
 
 ## Week 2
 
-- Tool(s):
-- What I asked for:
-- What I kept, changed or rejected, and why:
-- One thing the AI got wrong and how I fixed it:
+- Tool(s): ChatGPT
+- What I asked for: I asked for help to understand props, display menu items using .map() and use UseState to switch between vendors
+- What I kept, changed or rejected, and why: I changed the restaurant details to match with my project
+- One thing the AI got wrong and how I fixed it: AI initially provide restaurant data with only a few menu items, which did not fully meet the requirements. I checked the requirements again and update vendors.js file to include more menu items and vendors
