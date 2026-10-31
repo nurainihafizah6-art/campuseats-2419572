@@ -1,21 +1,17 @@
+import { useCart } from "../hooks/useCart.js";
 import CartItem from "./CartItem.jsx";
 
-function CartPage({ cart, onChangeQty, onRemove, onCheckout }) {
+function CartPage() {
+  const { cart, changeQty: onChangeQty, removeFromCart: onRemove } = useCart();
+
   const total = cart.reduce((sum, line) => sum + line.item.price * line.qty, 0);
 
   if (cart.length === 0) {
-    return (
-      <section>
-        <h2 className="section-title">My Cart</h2>
-        <p>Your cart is empty.</p>
-      </section>
-    );
+    return <p>Your cart is empty.</p>;
   }
 
   return (
-    <section>
-      <h2 className="section-title">My Cart</h2>
-
+    <div className="cart-panel">
       <div className="cart-list">
         {cart.map((line) => (
           <CartItem
@@ -27,14 +23,10 @@ function CartPage({ cart, onChangeQty, onRemove, onCheckout }) {
         ))}
       </div>
 
-      <div className="cart-total">
+      <div className="cart-summary">
         <h3>Total: RM {total.toFixed(2)}</h3>
-
-        <button type="button" className="btn" onClick={onCheckout}>
-          Proceed to Checkout
-        </button>
       </div>
-    </section>
+    </div>
   );
 }
 

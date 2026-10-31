@@ -23,3 +23,10 @@ Add a new section every week, before you tag. Did not use AI? Write "None" under
 - What I asked for: I asked ChatGPT to become my learning assistant to understand and implement the Week 3 CampusEats lab requirements step by step
 - What I kept, changed or rejected, and why: I made some changes such as adding all 16 IIUM mahallah options and showing the popularity score for each menu item.
 - One thing the AI got wrong and how I fixed it: ChatGPT suggested adding min and max for the pickup time but the browser showed its own error message instead of the error that I created. Then, I fixed it by adding noValidate to the form so my own error message could appear
+
+## Week 4
+
+- Tool(s): ChatGPT
+- What I asked for: To help me understand well how to use react router and custom hooks for my CampusEats
+- What I kept, changed or rejected, and why: I changed cart and checkout layout to be side by side instead of need to select "proceed to checkout" because it will be easy for customer to double check order before checkout
+- One thing that AI got wrong and how i fixed it: It change my original vendor card design , so I change it back to the original design

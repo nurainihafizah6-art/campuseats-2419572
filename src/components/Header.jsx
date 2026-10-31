@@ -1,20 +1,23 @@
-function Header({ cartCount, onNavigate }) {
+import { NavLink } from "react-router";
+import { useCart } from "../hooks/useCart.js";
+
+function Header() {
+  const { count } = useCart();
+
   return (
     <header className="header">
       <h1 className="logo">CampusEats</h1>
 
       <nav className="nav">
-        <button type="button" onClick={() => onNavigate("menu")}>
+        <NavLink to="/" end>
           Vendors
-        </button>
+        </NavLink>
 
-        <button
-          type="button"
-          onClick={() => onNavigate("cart")}
-          className="cart"
-        >
-          Cart <span className="badge">{cartCount}</span>
-        </button>
+        <NavLink to="/cart" className="cart">
+          Cart <span className="badge">{count}</span>
+        </NavLink>
+
+        <NavLink to="/orders">Orders</NavLink>
       </nav>
     </header>
   );
