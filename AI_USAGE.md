@@ -30,3 +30,10 @@ Add a new section every week, before you tag. Did not use AI? Write "None" under
 - What I asked for: To help me understand well how to use react router and custom hooks for my CampusEats
 - What I kept, changed or rejected, and why: I changed cart and checkout layout to be side by side instead of need to select "proceed to checkout" because it will be easy for customer to double check order before checkout
 - One thing that AI got wrong and how i fixed it: It change my original vendor card design , so I change it back to the original design
+
+## Week 5
+
+- Tool(s): ChatGPT
+- What I asked for: To help me understand Firebase Authentication, React Context, protected routes, and user-specific localStorage preferences
+- What I kept, changed or rejected, and why: I modified my existing VendorPage to save sorting preferences using each user's Firebase UID
+- One thing that AI got wrong and how I fixed it: The AI provided only four Firebase environment variables, while the lab instructions required six. So, I corrected the configuration by including all six variables

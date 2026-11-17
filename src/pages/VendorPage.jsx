@@ -1,16 +1,54 @@
 import { useParams } from "react-router";
-import { useLocalStorage } from "../hooks/useLocalStorage.js";
+import { useEffect, useState } from "react";
 import { useVendors } from "../hooks/useVendors.js";
 import { useCart } from "../hooks/useCart.js";
+import { useAuth } from "../hooks/useAuth.js";
 import MenuList from "../components/MenuList.jsx";
 import { Loading, ErrorMessage } from "../components/Status.jsx";
 
 function VendorPage() {
   const { id } = useParams();
   const { vendors, loading, error, retry } = useVendors();
-  const { addToCart } = useCart();
+  const { user } = useAuth();
 
-  const [sortBy, setSortBy] = useLocalStorage("campuseats-sort", "default");
+  // Each logged-in user gets a unique storage key
+  const storageKey = user ? `ce-sort-${user.uid}` : null;
+
+  const [sortBy, setSortBy] = useState("default");
+
+  // Load the correct preference when the user changes
+  useEffect(() => {
+    if (!storageKey) {
+      setSortBy("default");
+      return;
+    }
+
+    try {
+      const saved = localStorage.getItem(storageKey);
+      const preference = saved ? JSON.parse(saved) : "default";
+
+      const validOptions = ["default", "price-low", "price-high", "popular"];
+
+      setSortBy(validOptions.includes(preference) ? preference : "default");
+    } catch (error) {
+      console.error("Error reading sort preference:", error);
+      setSortBy("default");
+    }
+  }, [storageKey]);
+
+  // Save only when a logged-in user changes the dropdown
+  function handleSortChange(event) {
+    const selected = event.target.value;
+    setSortBy(selected);
+
+    if (storageKey) {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(selected));
+      } catch (error) {
+        console.error("Error saving sort preference:", error);
+      }
+    }
+  }
 
   if (loading) {
     return <Loading />;
@@ -52,13 +90,16 @@ function VendorPage() {
         <select
           id="sort-menu"
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={handleSortChange}
+          disabled={!user}
         >
           <option value="default">Default</option>
           <option value="price-low">Price: Low to High</option>
           <option value="price-high">Price: High to Low</option>
           <option value="popular">Most Popular</option>
         </select>
+
+        {!user && <p>Log in to save your sorting preference.</p>}
       </div>
 
       <MenuList items={sortedMenu} />
