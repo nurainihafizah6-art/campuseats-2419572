@@ -4,14 +4,14 @@ import { useVendors } from "../hooks/useVendors.js";
 import { Loading, ErrorMessage } from "../components/Status.jsx";
 
 function HomePage() {
-  const { vendors, loading, error, retry } = useVendors();
+  const { vendors, loading, error, reload } = useVendors();
 
   if (loading) {
     return <Loading />;
   }
 
   if (error) {
-    return <ErrorMessage message={error} onRetry={retry} />;
+    return <ErrorMessage message={error} onRetry={reload} />;
   }
 
   return (

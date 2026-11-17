@@ -1,108 +1,67 @@
-import { useParams } from "react-router";
-import { useEffect, useState } from "react";
-import { useVendors } from "../hooks/useVendors.js";
-import { useCart } from "../hooks/useCart.js";
-import { useAuth } from "../hooks/useAuth.js";
+import { useState } from "react";
+import { Link, useParams } from "react-router";
+import { useVendor } from "../hooks/useVendor.js";
 import MenuList from "../components/MenuList.jsx";
 import { Loading, ErrorMessage } from "../components/Status.jsx";
 
 function VendorPage() {
   const { id } = useParams();
-  const { vendors, loading, error, retry } = useVendors();
-  const { user } = useAuth();
 
-  // Each logged-in user gets a unique storage key
-  const storageKey = user ? `ce-sort-${user.uid}` : null;
-
+  // Student selects how the menu should be sorted.
   const [sortBy, setSortBy] = useState("default");
 
-  // Load the correct preference when the user changes
-  useEffect(() => {
-    if (!storageKey) {
-      setSortBy("default");
-      return;
-    }
+  // Firestore will return the menu in the selected order.
+  const { vendor, menu, loading, error } = useVendor(id, sortBy);
 
-    try {
-      const saved = localStorage.getItem(storageKey);
-      const preference = saved ? JSON.parse(saved) : "default";
-
-      const validOptions = ["default", "price-low", "price-high", "popular"];
-
-      setSortBy(validOptions.includes(preference) ? preference : "default");
-    } catch (error) {
-      console.error("Error reading sort preference:", error);
-      setSortBy("default");
-    }
-  }, [storageKey]);
-
-  // Save only when a logged-in user changes the dropdown
-  function handleSortChange(event) {
-    const selected = event.target.value;
-    setSortBy(selected);
-
-    if (storageKey) {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(selected));
-      } catch (error) {
-        console.error("Error saving sort preference:", error);
-      }
-    }
-  }
-
-  if (loading) {
-    return <Loading />;
-  }
+  if (loading) return <Loading />;
 
   if (error) {
-    return <ErrorMessage message={error} onRetry={retry} />;
+    return (
+      <ErrorMessage message={error} onRetry={() => window.location.reload()} />
+    );
   }
-
-  const vendor = vendors.find((v) => String(v.id) === id);
 
   if (!vendor) {
-    return <p>Vendor not found.</p>;
+    return (
+      <p>
+        Vendor not found. <Link to="/">Back to vendors</Link>
+      </p>
+    );
   }
 
-  const sortedMenu = [...vendor.menu].sort((a, b) => {
-    if (sortBy === "price-low") {
-      return a.price - b.price;
-    }
-
-    if (sortBy === "price-high") {
-      return b.price - a.price;
-    }
-
-    if (sortBy === "popular") {
-      return b.popularity - a.popularity;
-    }
-
-    return 0;
-  });
+  const items = menu.map((item) => ({
+    ...item,
+    vendorName: vendor.name,
+  }));
 
   return (
     <section>
-      <h2 className="section-title">Menu: {vendor.name}</h2>
+      <p>
+        <Link to="/">← All vendors</Link>
+      </p>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="sort-menu">Sort menu by: </label>
+      <h2 className="section-title">{vendor.name}</h2>
+
+      <p className="muted">
+        {vendor.location} · {vendor.openHours}
+      </p>
+
+      <div className="sort-controls">
+        <label htmlFor="menu-sort">Sort menu by:</label>
 
         <select
-          id="sort-menu"
+          id="menu-sort"
           value={sortBy}
-          onChange={handleSortChange}
-          disabled={!user}
+          onChange={(e) => setSortBy(e.target.value)}
         >
           <option value="default">Default</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="popular">Most Popular</option>
+          <option value="price">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="popularity">Popularity: High to Low</option>
         </select>
-
-        {!user && <p>Log in to save your sorting preference.</p>}
       </div>
 
-      <MenuList items={sortedMenu} />
+      <MenuList items={items} />
     </section>
   );
 }

@@ -1,3 +1,4 @@
+import SeedPage from "./pages/SeedPage.jsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import Layout from "./components/Layout.jsx";
@@ -24,6 +25,10 @@ function App() {
             <Route path="vendor/:id" element={<VendorPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+
+            {import.meta.env.DEV && (
+              <Route path="seed" element={<SeedPage />} />
+            )}
 
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>

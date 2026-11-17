@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-function CheckoutForm({ onPlaceOrder }) {
-  const [name, setName] = useState("");
+function CheckoutForm({ defaultName = "", onPlaceOrder }) {
+  const [name, setName] = useState(defaultName);
   const [mahallah, setMahallah] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [errors, setErrors] = useState({});

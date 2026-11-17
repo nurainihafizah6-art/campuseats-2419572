@@ -37,3 +37,10 @@ Add a new section every week, before you tag. Did not use AI? Write "None" under
 - What I asked for: To help me understand Firebase Authentication, React Context, protected routes, and user-specific localStorage preferences
 - What I kept, changed or rejected, and why: I modified my existing VendorPage to save sorting preferences using each user's Firebase UID
 - One thing that AI got wrong and how I fixed it: The AI provided only four Firebase environment variables, while the lab instructions required six. So, I corrected the configuration by including all six variables
+
+## Week 6
+
+- Tool(s): ChatGPT
+- What I asked for: To guide me step by step for Lab 6 which includes displaying live vendor and menu data, and implementing my personal sorting feature using Firestore queries
+- What I kept, changed or rejected, and why: I used orderBy() to sort menu items by price and popularity and I adjusted the suggested code to make sure it worked with my existing CampusEats features
+- One thing that AI got wrong and how I fixed it: The AI accidentally removed one of my existing sorting options when updating VendorPage.jsx. My dropdown originally had four options but the suggested code only had three. I noticed the mistake and fixed it by adding back the Price: High to Low option and updating the Firestore query in vendors.js

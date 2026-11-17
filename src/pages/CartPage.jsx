@@ -1,18 +1,27 @@
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth.js";
+import { placeOrders } from "../services/orders.js";
 import { useNavigate } from "react-router";
 import { useCart } from "../hooks/useCart.js";
 import Cart from "../components/CartPage.jsx";
 import CheckoutForm from "../components/CheckoutForm.jsx";
 
 function CartPage() {
-  const { cart, placeOrder } = useCart();
+  const { cart, total, changeQty, removeFromCart, clearCart } = useCart();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [error, setError] = useState("");
 
-  function handlePlaceOrder(orderDetails) {
-    const order = placeOrder(orderDetails);
+  async function handlePlaceOrder(details) {
+    setError("");
 
-    if (!order) return;
-
-    navigate("/orders");
+    try {
+      await placeOrders(user, cart, details);
+      clearCart();
+      navigate("/orders");
+    } catch (err) {
+      setError(`Could not place the order: ${err.message}`);
+    }
   }
 
   return (
@@ -26,7 +35,16 @@ function CartPage() {
 
         {cart.length > 0 && (
           <div className="checkout-column">
-            <CheckoutForm onPlaceOrder={handlePlaceOrder} />
+            <CheckoutForm
+              defaultName={user?.displayName ?? ""}
+              onPlaceOrder={handlePlaceOrder}
+            />
+
+            {error && (
+              <p className="field-error" role="alert">
+                {error}
+              </p>
+            )}
           </div>
         )}
       </div>

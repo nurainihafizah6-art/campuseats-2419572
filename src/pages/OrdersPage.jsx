@@ -1,54 +1,54 @@
-import { Link } from "react-router";
-import { useCart } from "../hooks/useCart.js";
+import OrderActions from "../components/OrderActions.jsx";
+import { useMyOrders } from "../hooks/useMyOrders.js";
+import OrderStatus from "../components/OrderStatus.jsx";
+import { Loading, ErrorMessage } from "../components/Status.jsx";
 
 function OrdersPage() {
-  const { orders } = useCart();
+  const { orders, loading, error } = useMyOrders();
+
+  if (loading) return <Loading />;
+
+  if (error) {
+    return (
+      <ErrorMessage message={error} onRetry={() => window.location.reload()} />
+    );
+  }
 
   return (
     <section>
-      <h2 className="section-title">Order History</h2>
+      <h2 className="section-title">My Orders</h2>
 
       {orders.length === 0 ? (
-        <>
-          <p>You haven't placed any orders yet.</p>
-          <Link to="/">Browse Vendors</Link>
-        </>
+        <p className="muted">No orders yet.</p>
       ) : (
-        <>
+        <ul className="order-list">
           {orders.map((order) => (
-            <div className="order-confirmation" key={order.id}>
-              <h3>Order placed successfully!</h3>
-
-              <p>
-                <strong>Name:</strong> {order.name}
+            <li key={order.id} className="card">
+              <p className="cart-name">
+                {order.vendorName} · pickup {order.pickupTime}
               </p>
 
-              <p>
-                <strong>Mahallah:</strong> {order.mahallah}
+              <p className="muted">
+                {order.items
+                  .map((item) => `${item.qty}× ${item.name}`)
+                  .join(", ")}
               </p>
 
-              <p>
-                <strong>Pickup Time:</strong> {order.pickupTime}
+              <p className="muted">
+                Placed{" "}
+                {order.createdAt
+                  ? order.createdAt.toDate().toLocaleString("en-MY")
+                  : "just now"}
               </p>
 
-              <h3>Ordered Items</h3>
+              <p className="price">RM {order.total.toFixed(2)}</p>
 
-              <ul>
-                {order.items.map((line) => (
-                  <li key={line.item.id}>
-                    {line.item.name} x {line.qty}
-                    {" — RM "}
-                    {(line.item.price * line.qty).toFixed(2)}
-                  </li>
-                ))}
-              </ul>
+              <OrderStatus status={order.status} />
 
-              <h3>Total: RM {order.total.toFixed(2)}</h3>
-            </div>
+              {order.status === "Received" && <OrderActions order={order} />}
+            </li>
           ))}
-
-          <Link to="/">Back to Vendors</Link>
-        </>
+        </ul>
       )}
     </section>
   );

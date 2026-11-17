@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { subscribeToVendors } from "../services/vendors.js";
 
 export function useVendors() {
   const [vendors, setVendors] = useState([]);
@@ -7,43 +8,27 @@ export function useVendors() {
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
-    const controller = new AbortController();
-
     setLoading(true);
     setError(null);
 
-    fetch("/api/vendors.json", {
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
+    const unsubscribe = subscribeToVendors(
+      (data) => {
+        setVendors(data);
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      },
+    );
 
-        return response.json();
-      })
-      .then((data) => {
-        if (!controller.signal.aborted) {
-          setVendors(data);
-        }
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      });
-
-    return () => controller.abort();
+    return unsubscribe;
   }, [reloadKey]);
 
-  function retry() {
-    setReloadKey((prev) => prev + 1);
-  }
-
-  return { vendors, loading, error, retry };
+  return {
+    vendors,
+    loading,
+    error,
+    reload: () => setReloadKey((k) => k + 1),
+  };
 }
